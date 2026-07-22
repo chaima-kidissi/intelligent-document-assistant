@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build: .
+    container_name: rag_backend
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - .:/app
+
+    env_file:
+      - .env
+
+  frontend:
+    build: ./frontend
+
+    container_name: rag_frontend
+
+    ports:
+      - "3000:3000"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    depends_on:
+      - backend
+      - keycloak
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./keycloak-realm.json:/opt/keycloak/data/import/realm.json

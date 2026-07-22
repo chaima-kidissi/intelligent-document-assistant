@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Light mode colors — Addinn brand palette */
+  --color-bg-primary: #F7F9FC;
+  --color-bg-card: #FFFFFF;
+  --color-bg-sidebar: #EEF2F7;
+  --color-primary: #1565C0;
+  --color-primary-hover: #0D47A1;
+  --color-secondary: #5C6BC0;
+  --color-text-primary: #1E293B;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-border-light: #F1F5F9;
+  --color-user-bubble: #1565C0;
+  --color-user-text: #FFFFFF;
+  --color-assistant-bubble: #FFFFFF;
+  --color-assistant-text: #1E293B;
+  --color-input-bg: #FFFFFF;
+  --color-hover: #E8EDF5;
+  --color-logo: #1565C0;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode overrides — soft dark with Addinn accent */
+.dark {
+  --color-bg-primary: #0F172A;
+  --color-bg-card: #1E293B;
+  --color-bg-sidebar: #1E293B;
+  --color-primary: #42A5F5;
+  --color-primary-hover: #64B5F6;
+  --color-secondary: #7986CB;
+  --color-text-primary: #F1F5F9;
+  --color-text-secondary: #94A3B8;
+  --color-text-muted: #64748B;
+  --color-border: #334155;
+  --color-border-light: #1E293B;
+  --color-user-bubble: #42A5F5;
+  --color-user-text: #FFFFFF;
+  --color-assistant-bubble: #1E293B;
+  --color-assistant-text: #F1F5F9;
+  --color-input-bg: #1E293B;
+  --color-hover: #334155;
+  --color-logo: #42A5F5;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Markdown content styling */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.markdown-content h1 { font-size: 1.5rem; }
+.markdown-content h2 { font-size: 1.25rem; }
+.markdown-content h3 { font-size: 1.1rem; }
+
+.markdown-content p {
+  margin-bottom: 0.75em;
+  line-height: 1.7;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.markdown-content li {
+  margin-bottom: 0.25em;
+  line-height: 1.6;
+}
+
+.markdown-content code {
+  background: var(--color-hover);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: 'Fira Code', 'Consolas', monospace;
+}
+
+.markdown-content pre {
+  background: var(--color-bg-card);
+  padding: 1em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 0.75em;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1em;
+  margin: 0.75em 0;
+  color: var(--color-text-secondary);
+}
+
+.markdown-content a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+/* Typing animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.typing-cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes typingDot {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.typing-dot {
+  animation: typingDot 1.4s infinite ease-in-out both;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.16s; }
+.typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+/* Admin Portal Styles */
+.admin-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.admin-gradient-subtle {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(51, 65, 85, 0.3);
+}
+
+.role-badge-admin {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-badge-user {
+  background: linear-gradient(135deg, #1565C0 0%, #42A5F5 100%);
+  color: white;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Admin table styles */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.admin-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-table td {
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.admin-table tr:hover td {
+  background-color: var(--color-hover);
+}
+
+/* Stat card counter animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-value {
+  animation: countUp 0.6s ease-out forwards;
+}
+
+/* Admin sidebar */
+.admin-sidebar {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.dark .admin-sidebar {
+  background: linear-gradient(180deg, #0a0a1a 0%, #0f172a 50%, #1e293b 100%);
+}
+
+/* Modal overlay */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+}
+
+/* Upload drop zone */
+.drop-zone {
+  border: 2px dashed var(--color-border);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.drop-zone:hover,
+.drop-zone.active {
+  border-color: var(--color-primary);
+  background: rgba(21, 101, 192, 0.05);
+}
+
+.dark .drop-zone:hover,
+.dark .drop-zone.active {
+  background: rgba(66, 165, 245, 0.05);
+}
+
+/* ── TTS (Text-to-Speech) Button ── */
+.tts-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.tts-button:hover {
+  color: var(--color-primary) !important;
+  background-color: rgba(21, 101, 192, 0.08) !important;
+}
+
+.dark .tts-button:hover {
+  background-color: rgba(66, 165, 245, 0.12) !important;
+}
+
+/* Pulsing glow when speaking */
+@keyframes tts-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(21, 101, 192, 0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(21, 101, 192, 0); }
+}
+
+.tts-button[style*="rgba(21, 101, 192, 0.1)"] {
+  animation: tts-pulse 1.5s ease-in-out infinite;
+}
+
+.dark .tts-button[style*="rgba(21, 101, 192, 0.1)"] {
+  animation-name: tts-pulse-dark;
+}
+
+@keyframes tts-pulse-dark {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(66, 165, 245, 0.25); }
+  50% { box-shadow: 0 0 0 6px rgba(66, 165, 245, 0); }
+}
