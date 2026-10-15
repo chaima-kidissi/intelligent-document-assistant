@@ -1,92 +1,204 @@
-# Assistant Intelligent
+# 📄 Intelligent Document Assistant
 
+An intelligent internal document search assistant powered by **RAG (Retrieval-Augmented Generation)**. Upload your documents, ask questions in natural language, and get accurate answers grounded in your own data — with source citations.
 
+## ✨ Features
 
-## Getting started
+- 🔍 **Semantic Search** — Find relevant information across uploaded documents using vector similarity search
+- 🤖 **AI-Powered Answers** — Generate accurate, context-aware responses using LLaMA 3.3 70B via Groq
+- 📁 **Document Management** — Upload, list, and delete `.docx` documents through the UI
+- 🔐 **Authentication & Authorization** — Keycloak-based SSO with role-based access control (RBAC)
+- 👤 **Admin Dashboard** — Manage users, roles, and documents from a dedicated admin panel
+- 📊 **Source Citations** — Every answer includes relevant source excerpts with confidence scores
+- 💬 **Chat Interface** — Modern, responsive chat UI with conversation history
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+## 🏗️ Architecture
 
 ```
-cd existing_repo
-git remote add origin https://code.addinn-group.com/addinn/digital-software-factory/stage-lab/stage_ete/2026/data-ai/sujet-6-assistant-intelligent-de-recherche-documentaire-interne-bas-sur-le-rag/assistant-intelligent.git
-git branch -M main
-git push -uf origin main
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│                 │     │                 │     │                 │
+│   React Frontend│────▶│  FastAPI Backend │────▶│    Keycloak      │
+│   (Vite + TS)   │     │   (Python)      │     │   (Auth Server)  │
+│   Port: 3000    │     │   Port: 8000    │     │   Port: 8080     │
+│                 │     │                 │     │                 │
+└─────────────────┘     └────────┬────────┘     └─────────────────┘
+                                 │
+                        ┌────────┴────────┐
+                        │                 │
+                   ┌────▼────┐      ┌─────▼─────┐
+                   │ ChromaDB│      │  Groq API  │
+                   │ (Vector │      │ (LLaMA 3.3)│
+                   │  Store) │      │            │
+                   └─────────┘      └────────────┘
 ```
 
-## Integrate with your tools
+### RAG Pipeline
 
-- [ ] [Set up project integrations](https://code.addinn-group.com/addinn/digital-software-factory/stage-lab/stage_ete/2026/data-ai/sujet-6-assistant-intelligent-de-recherche-documentaire-interne-bas-sur-le-rag/assistant-intelligent/-/settings/integrations)
+1. **Document Ingestion** — `.docx` files are loaded, split into chunks, and embedded using HuggingFace sentence-transformers
+2. **Vector Storage** — Embeddings are stored in ChromaDB for efficient similarity search
+3. **Semantic Retrieval** — User queries are embedded and matched against stored document chunks
+4. **Answer Generation** — Retrieved context is sent to LLaMA 3.3 70B (via Groq) to generate grounded answers
 
-## Collaborate with your team
+## 🛠️ Tech Stack
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Backend
+| Technology | Purpose |
+|---|---|
+| **FastAPI** | REST API framework |
+| **LangChain** | RAG orchestration & document processing |
+| **ChromaDB** | Vector database for embeddings |
+| **Groq** | LLM inference (LLaMA 3.3 70B) |
+| **Sentence-Transformers** | Document & query embeddings |
+| **Keycloak** | Identity & access management |
+| **Python-Jose** | JWT token validation |
 
-## Test and Deploy
+### Frontend
+| Technology | Purpose |
+|---|---|
+| **React 19** | UI framework |
+| **TypeScript** | Type-safe development |
+| **Vite** | Build tool & dev server |
+| **Tailwind CSS 4** | Utility-first styling |
+| **Keycloak-JS** | Frontend authentication |
+| **Framer Motion** | Animations |
+| **React Markdown** | Markdown rendering in chat |
+| **Axios** | HTTP client |
 
-Use the built-in continuous integration in GitLab.
+### Infrastructure
+| Technology | Purpose |
+|---|---|
+| **Docker & Docker Compose** | Containerization |
+| **Keycloak** | SSO & RBAC |
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+## 🚀 Getting Started
 
-***
+### Prerequisites
 
-# Editing this README
+- [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
+- [Groq API Key](https://console.groq.com/) (free tier available)
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Installation
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/chaima-kidissi/intelligent-document-assistant.git
+   cd intelligent-document-assistant
+   ```
 
-## Name
-Choose a self-explaining name for your project.
+2. **Configure environment variables**
+   ```bash
+   cp .env.example .env
+   ```
+   Edit `.env` and add your Groq API key:
+   ```env
+   GROQ_API_KEY=your_groq_api_key_here
+   ```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+3. **Start the application**
+   ```bash
+   docker-compose up --build
+   ```
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+4. **Access the application**
+   | Service | URL |
+   |---|---|
+   | Frontend | [http://localhost:3000](http://localhost:3000) |
+   | Backend API | [http://localhost:8000](http://localhost:8000) |
+   | Keycloak Admin | [http://localhost:8080](http://localhost:8080) |
+   | API Docs (Swagger) | [http://localhost:8000/docs](http://localhost:8000/docs) |
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+### Default Keycloak Credentials
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+| Account | Username | Password |
+|---|---|---|
+| Keycloak Admin Console | `admin` | `admin` |
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+## 📡 API Endpoints
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Authentication Required (Bearer Token)
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/chat` | Ask a question to the RAG assistant |
+| `POST` | `/upload` | Upload a `.docx` document |
+| `GET` | `/documents` | List all uploaded documents |
+| `GET` | `/me` | Get current user info & roles |
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+### Admin Only (requires `admin` role)
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/admin/users` | List all Keycloak users |
+| `POST` | `/admin/users` | Create a new user |
+| `PUT` | `/admin/users/{id}/roles` | Update user roles |
+| `DELETE` | `/admin/users/{id}` | Delete a user |
+| `GET` | `/admin/stats` | Get system statistics |
+| `DELETE` | `/admin/documents/{name}` | Delete a document |
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## 📂 Project Structure
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+```
+intelligent-document-assistant/
+├── app/                        # Backend application
+│   ├── app.py                  # FastAPI main app & routes
+│   ├── auth.py                 # Keycloak JWT authentication
+│   ├── generator.py            # LLM answer generation (Groq)
+│   ├── retriever.py            # Semantic search & retrieval
+│   ├── vector_store.py         # ChromaDB vector store management
+│   ├── embeddings.py           # Embedding model configuration
+│   ├── chunking.py             # Document chunking strategy
+│   └── loaders.py              # Document file loaders
+├── frontend/                   # React frontend
+│   ├── src/
+│   │   ├── components/         # UI components (Chat, Sidebar, Header...)
+│   │   ├── pages/              # Page views (Home, Login, Admin)
+│   │   ├── contexts/           # React contexts
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── services/           # API service layer
+│   │   └── types/              # TypeScript type definitions
+│   ├── Dockerfile
+│   └── package.json
+├── corpus/                     # Uploaded documents storage
+│   └── word/                   # .docx files
+├── chroma_db/                  # ChromaDB persistent storage
+├── docker-compose.yml          # Multi-service orchestration
+├── Dockerfile                  # Backend Docker image
+├── keycloak-realm.json         # Keycloak realm configuration
+├── requirements.txt            # Python dependencies
+└── .env.example                # Environment variables template
+```
 
-## License
-For open source projects, say how it is licensed.
+## 🔧 Development
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+### Run Backend Locally (without Docker)
+
+```bash
+# Create virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate     # Windows
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the server
+uvicorn app.app:app --reload --port 8000
+```
+
+### Run Frontend Locally
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend dev server will start at [http://localhost:5173](http://localhost:5173).
+
+## 👩‍💻 Author
+
+**Chaima Kidissi**
+
+## 📄 License
+
+This project was developed as part of an internship at [Addinn Group](https://www.addinn-group.com/).
